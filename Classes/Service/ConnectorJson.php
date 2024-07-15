@@ -32,7 +32,7 @@ class ConnectorJson extends ConnectorBase
 {
     protected string $extensionKey = 'svconnector_cornerstone';
 
-    protected string $type = 'json';
+    protected string $type = 'cornerstone';
 
     public function getType(): string
     {
@@ -41,7 +41,7 @@ class ConnectorJson extends ConnectorBase
 
     public function getName(): string
     {
-        return 'JSON connector';
+        return 'Cornerstone (JSON) connector';
     }
 
     /**
