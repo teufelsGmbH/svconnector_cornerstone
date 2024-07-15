@@ -5,10 +5,10 @@ services:
     autoconfigure: true
     public: false
 
-  Cobweb\SvconnectorJson\:
+  Cobweb\SvconnectorConerstone\:
     resource: '../Classes/*'
 
-  Cobweb\SvconnectorJson\Service\ConnectorJson:
+  Cobweb\SvconnectorCornerstone\Service\ConnectorJson:
     public: true
     arguments:
       - !tagged_iterator connector.service

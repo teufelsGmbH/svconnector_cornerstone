@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cobweb\SvconnectorJson\Unit\Tests;
+namespace Cobweb\SvconnectorCornerstone\Unit\Tests;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,7 +18,7 @@ namespace Cobweb\SvconnectorJson\Unit\Tests;
  */
 
 use Cobweb\Svconnector\Domain\Repository\ConnectorRepository;
-use Cobweb\SvconnectorJson\Service\ConnectorJson;
+use Cobweb\SvconnectorCornerstone\Service\ConnectorJson;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -27,13 +27,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Francois Suter <typo3@cobweb.ch>
  * @package TYPO3
- * @subpackage tx_svconnector_json
+ * @subpackage tx_svconnector_cornerstone
  */
 class ConnectorJsonTest extends FunctionalTestCase
 {
     protected $testExtensionsToLoad = [
             'typo3conf/ext/svconnector',
-            'typo3conf/ext/svconnector_json',
+            'typo3conf/ext/svconnector_cornerstone',
     ];
 
     protected ConnectorJson $subject;
@@ -61,7 +61,7 @@ class ConnectorJsonTest extends FunctionalTestCase
         return [
                 'UTF-8 data' => [
                         'parameters' => [
-                                'uri' => 'EXT:svconnector_json/Tests/Functional/Fixtures/data_utf8.json'
+                                'uri' => 'EXT:svconnector_cornerstone/Tests/Functional/Fixtures/data_utf8.json'
                         ],
                         'result' => [
                                 'items' => [
@@ -73,7 +73,7 @@ class ConnectorJsonTest extends FunctionalTestCase
                 ],
                 'ISO-8859-1 data' => [
                         'parameters' => [
-                                'uri' => 'EXT:svconnector_json/Tests/Functional/Fixtures/data_latin1.json',
+                                'uri' => 'EXT:svconnector_cornerstone/Tests/Functional/Fixtures/data_latin1.json',
                                 'encoding' => 'iso-8859-1'
                         ],
                         'result' => [

@@ -1,11 +1,16 @@
 {
-	"name": "cobweb/svconnector_json",
+	"name": "teufels/svconnector_cornerstone",
 	"type": "typo3-cms-extension",
-	"description": "Connector service for JSON data",
+	"description": "Connector service for Cornerstone Reporting API JSON",
 	"license": [
 		"GPL-2.0-or-later"
 	],
 	"authors": [
+		{
+			"name": "teufels GmbH",
+			"role": "Developer",
+			"homepage": "https://teufels.com/"
+		},
 		{
 			"name": "Francois Suter",
 			"role": "Developer",
@@ -14,7 +19,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Cobweb\\SvconnectorJson\\": "Classes/"
+			"Cobweb\\SvconnectorCornerstone\\": "Classes/"
 		}
 	},
 	"require": {
@@ -24,11 +29,11 @@
 		"cobweb/svconnector": "^5.0 || ^5.1"
 	},
 	"replace": {
-		"typo3-ter/svconnector_json": "self.version"
+		"typo3-ter/svconnector_cornerstone": "self.version"
 	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "svconnector_json"
+			"extension-key": "svconnector_cornerstone"
 		}
 	}
 }
