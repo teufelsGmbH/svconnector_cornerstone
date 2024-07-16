@@ -433,7 +433,7 @@ class ConnectorJson extends ConnectorBase
     }
 
     /**
-     * extend Query Parameters with jrl_job_requisition_id
+     * extend Query Parameters filter with jrl_job_requisition_id's
      *
      * @param array $queryParameters queryParameters
      * @return array
