@@ -415,6 +415,7 @@ class ConnectorJson extends ConnectorBase
         $uri = $parameters['uri'];
 
         /*
+        //extend Query Parameters filter with jrl_job_requisition_id's
         switch (true) {
             case (strpos($uri, 'vw_rpt_job_requisition_local') !== false):
             case (strpos($uri, 'vw_rpt_requisition_location') !== false):
