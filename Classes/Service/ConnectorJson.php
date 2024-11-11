@@ -262,7 +262,7 @@ class ConnectorJson extends ConnectorBase
         if (is_null($headers)) { $headers = []; }
         $headers = array_merge($headers, ['Authorization' => 'Bearer ' . $accessToken]);
 
-        // fetch all data
+        //fetch all data
         $data = $this->fetchData($parameters, $headers);
 
         if ($data === false) {
@@ -278,6 +278,12 @@ class ConnectorJson extends ConnectorBase
                 SourceErrorException::class
             );
         }
+
+        //limit to existing records
+        if (isset($parameters['limitByJobId']) && !empty($parameters['limitByJobId'])) {
+            $data = $this->filterDataByJobId($data, $parameters['limitByJobId']);
+        }
+
         // Check if the current charset is the same as the file encoding
         // Don't do the check if no encoding was defined
         // TODO: add automatic encoding detection by reading the encoding attribute in the JSON header
@@ -305,6 +311,48 @@ class ConnectorJson extends ConnectorBase
 
         // Return the result
         return $data;
+    }
+
+    /**
+     * Filters the data based on existing `external_id` values in the database.
+     *
+     * @param string $data JSON string with the original data
+     * @param string $jobIdField The field name for job requisition ID to filter by
+     * @return string Filtered JSON string
+     */
+    private function filterDataByJobId(string $data, string $jobIdField): string
+    {
+        // Decode JSON into an array
+        $dataArray = json_decode($data, true);
+
+        // Get existing external_id values from the database
+        $existingIds = $this->getJobOfferExternalIds();
+
+        // Filter data based on existing external_id values
+        $filteredDataArray = array_filter($dataArray, function ($item) use ($existingIds, $jobIdField) {
+            return in_array($item[$jobIdField], $existingIds);
+        });
+
+        // Return the filtered array as JSON
+        return json_encode($filteredDataArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Get external_ids from tx_tt3career_domain_model_joboffer table
+     *
+     * @return array
+     */
+    private function getJobOfferExternalIds(): array
+    {
+        // Query the database to get the external_ids
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_tt3career_domain_model_joboffer');
+
+        return $queryBuilder
+            ->select('external_id')
+            ->from('tx_tt3career_domain_model_joboffer')
+            ->execute()
+            ->fetchFirstColumn();
     }
 
     /**
@@ -365,7 +413,7 @@ class ConnectorJson extends ConnectorBase
                         'clientId' => $parameters['clientId'],
                         'clientSecret' => $parameters['clientSecret'],
                         'grantType' => 'client_credentials',
-                        'scope' => 'vw_rpt_requisition:read vw_rpt_requisition_cf:read vw_rpt_job_requisition_local:read vw_rpt_requisition_location:read',
+                        'scope' => 'vw_rpt_requisition:read vw_rpt_requisition_cf:read vw_rpt_job_requisition_local:read vw_rpt_requisition_location:read vw_rpt_requisition_posting:read',
                     ],
                 ]);
 
@@ -414,16 +462,6 @@ class ConnectorJson extends ConnectorBase
     {
         $uri = $parameters['uri'];
 
-        /*
-        //extend Query Parameters filter with jrl_job_requisition_id's
-        switch (true) {
-            case (strpos($uri, 'vw_rpt_job_requisition_local') !== false):
-            case (strpos($uri, 'vw_rpt_requisition_location') !== false):
-                $parameters['queryParameters'] = $this->extendQueryParameters($parameters['queryParameters'] ?? []);
-                break;
-        }
-        */
-
         if (!empty($parameters['queryParameters'])) {
             $uri = sprintf('%s?%s', $uri, http_build_query($parameters['queryParameters']));
         }
@@ -433,13 +471,14 @@ class ConnectorJson extends ConnectorBase
         return $data;
     }
 
+
     /**
      * extend Query Parameters filter with jrl_job_requisition_id's
      *
      * @param array $queryParameters queryParameters
      * @return array
      */
-    private function extendQueryParameters(array $queryParameters): array
+    private function extendQueryParameters(array $queryParameters, string $filterName): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_tt3career_domain_model_joboffer');
