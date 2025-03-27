@@ -1,7 +1,7 @@
 {
 	"name": "teufels/svconnector_cornerstone",
 	"type": "typo3-cms-extension",
-	"description": "Connector service for Cornerstone Reporting API JSON",
+	"description": "Connector service for Cornerstone Reporting API (JSON)",
 	"license": [
 		"GPL-2.0-or-later"
 	],
