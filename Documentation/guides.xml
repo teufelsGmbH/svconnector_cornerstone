@@ -8,7 +8,7 @@
                project-issues="https://github.com/cobwebch/svconnector_json/issues" edit-on-github-branch="master"
                edit-on-github="cobwebch/svconnector_json"
                typo3-core-preferred="stable"
-               interlink-shortcode="cobweb/svconnector_json"
+               interlink-shortcode="teufels/svconnector_cornerstone"
     />
     <project
             title="JSON Connector Service"
